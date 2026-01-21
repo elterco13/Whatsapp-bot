@@ -1,0 +1,26 @@
+// Migration utility - converts whatsapp-web.js handlers to Baileys
+// This script shows the pattern for the remaining 4 handlers
+
+// PATTERN FOR ALL HANDLERS:
+// 1. Replace imports
+// 2. Add sock param, change Message to WAMessage
+// 3. Pass sock + message (not message.key) to safeReply/safeReact
+
+/* RECIPE.TS - Two functions */
+// handleRecipe(sock: WASocket, message: WAMessage, text: string)
+// handleIngredientsSearch(sock: WASocket, message: WAMessage, text: string)
+// Update all: safeReply(message, ...) -> safeReply(sock, message, ...)
+// Update all: safeReact(message, ...) -> safeReact(sock, message, ...)
+
+/* FINANCE.TS - One function */
+// handleFinance(sock: WASocket, message: WAMessage, text: string)
+// Media check: message.hasMedia -> message.message?.imageMessage || message.message?.documentMessage
+// downloadMedia: await downloadMediaMessage(message, 'buffer', {})
+
+/* APPOINTMENT.TS - One function */
+// handleAppointment(sock: WASocket, message: WAMessage, text: string)
+
+/* DONE.TS - Three functions */
+// handleDone(sock: WASocket, message: WAMessage, query: string)
+// handleProcessDoneSelection(sock: WASocket, message: WAMessage, text: string, data: any)
+// (internal functions parseNumberSelection and filterTodoSheet don't need sock)

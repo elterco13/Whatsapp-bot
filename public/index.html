@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal ERP Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Personal Assistant Dashboard</h1>
+            <div id="status-indicator" class="badge badge-done">Online</div>
+        </header>
+
+        <div id="loading" class="loading">Cargando datos...</div>
+
+        <div id="dashboard" class="dashboard-grid" style="display: none;">
+
+            <!-- Financial Stats Row -->
+            <div class="card full-width">
+                <div class="card-header">
+                    <span class="card-title">💰 Finanzas (Mes / Año)</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Ingresos</span>
+                        <div class="stat-values">
+                            <span id="inc-month" class="val-month">0€</span>
+                            <span id="inc-year" class="val-year">0€</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Gastos</span>
+                        <div class="stat-values">
+                            <span id="exp-month" class="val-month">0€</span>
+                            <span id="exp-year" class="val-year">0€</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Ing. Neto (Post-Tax)</span>
+                        <div class="stat-values">
+                            <span id="net-month" class="val-month highlight">0€</span>
+                            <span id="net-year" class="val-year highlight">0€</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📅 Próximas Citas</span>
+                </div>
+                <ul id="appointment-list"></ul>
+            </div>
+
+            <!-- ToDo List -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📝 Pendientes</span>
+                </div>
+                <ul id="todo-list"></ul>
+            </div>
+
+            <!-- Shopping -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🛒 Lista de Compras</span>
+                </div>
+                <ul id="shopping-list"></ul>
+            </div>
+
+            <!-- Ideas -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">💡 Rincón de Ideas</span>
+                </div>
+                <ul id="idea-list"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
