@@ -18,8 +18,14 @@ export const ENV = {
         SHOPPING: 'Compras',
         RECIPES: 'Recetas',
         TODO: 'Todo',
-        FINANCE: 'Finanzas',
-        APPOINTMENTS: 'Citas'
+        APPOINTMENTS: 'Citas',
+        GASTOS: 'GASTOS',
+        GASTOS_FIJOS: 'GASTOS FIJOS',
+        INGRESOS: 'INGRESOS',
+        DESPENSA: 'Despensa',
+        MOVIMIENTOS: 'Movimientos',
+        ANALISIS_CONTABLE: 'ANALISIS CONTABLE',
+        CLIENTES: 'CLIENTES'
     },
 
     // Permitted chats (if empty, allows all)

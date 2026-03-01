@@ -4,7 +4,7 @@ import { handleIdea } from "./idea.js";
 import { handleTodo } from "./todo.js";
 import { handleShopping } from "./shopping.js";
 import { handleRecipe, handleIngredientsSearch } from "./recipe.js";
-import { handleFinance } from "./finance.js";
+import { handleFinance, handleTicket, handleExtracto, handleGastoDeductible, handleExtractoBanco, handleIngresoFactura, handleIngresoClienteSeleccion } from "./finance.js";
 import { handleAppointment } from "./appointment.js";
 import { handleDone, handleProcessDoneSelection } from "./done.js";
 import { handleLists, handleListSelection, handleRecipesSubmenu, handleRecipeSearch } from "./lists.js";
@@ -14,10 +14,16 @@ import { safeReply } from "../utils/whatsapp.js";
 
 export async function dispatchMessage(sock: WASocket, message: WAMessage) {
     // Extract text from Baileys message structure
+    // imageMessage/documentMessage captions: photo or file + command sent together
+    // documentWithCaptionMessage: Baileys wraps documents-with-caption in this type
     const text = message.message?.conversation ||
-        message.message?.extendedTextMessage?.text || '';
+        message.message?.extendedTextMessage?.text ||
+        message.message?.imageMessage?.caption ||
+        message.message?.documentMessage?.caption ||
+        message.message?.documentWithCaptionMessage?.message?.documentMessage?.caption || '';
     const upperText = text.toUpperCase();
     const userId = message.key.remoteJid!;
+
 
     // 1. Check for Active Flow State
     const currentState = flowState.get(userId);
@@ -33,6 +39,10 @@ export async function dispatchMessage(sock: WASocket, message: WAMessage) {
             else if (command === 'TODO') await handleTodo(sock, message, text);
             else if (command === 'SHOPPING') await handleShopping(sock, message, text);
             else if (command === 'DONE_SELECTION') await handleProcessDoneSelection(sock, message, text, currentState.data);
+            else if (command === 'GASTO_DEDUCTIBLE') await handleGastoDeductible(sock, message, text, currentState.data);
+            else if (command === 'EXTRACTO_BANCO') await handleExtractoBanco(sock, message, text, currentState.data);
+            else if (command === 'INGRESO_FACTURA') await handleIngresoFactura(sock, message, text, currentState.data);
+            else if (command === 'INGRESO_CLIENTE_SELECCION') await handleIngresoClienteSeleccion(sock, message, text, currentState.data);
             else if (command === 'LISTS_MENU') {
                 await handleListSelection(sock, message, text);
             }
@@ -94,6 +104,14 @@ export async function dispatchMessage(sock: WASocket, message: WAMessage) {
             await handleFinance(sock, message, text);
         }
     }
+    // TICKET (foto de ticket de supermercado)
+    else if (upperText.startsWith('/TICKET')) {
+        await handleTicket(sock, message, text.slice(7).trim());
+    }
+    // EXTRACTO (extracto bancario PDF/Excel/imagen)
+    else if (upperText.startsWith('/EXTRACTO')) {
+        await handleExtracto(sock, message, text.slice(9).trim());
+    }
     // INFORME
     else if (upperText === 'INFORME' || upperText === '/INFORME') {
         const { readSheet } = await import("../services/sheets.js");
@@ -137,7 +155,9 @@ export async function dispatchMessage(sock: WASocket, message: WAMessage) {
 /CITA - Agendar
 /HECHO [algo] - Tachar pendiente/compra
 /INGRESO, /GASTO, /FACTURA - Finanzas
-/INFORME - Ver estado
+/TICKET 📸 - Subir foto de ticket (super)
+/EXTRACTO 🏦 - Subir extracto bancario
+/INFORME - Ver estado financiero
 `);
     }
 }

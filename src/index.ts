@@ -85,9 +85,12 @@ async function connectToWhatsApp() {
             const isGroup = chatId.endsWith('@g.us');
             const sender = message.key.fromMe ? 'Bot' : (message.key.participant || chatId);
 
-            // Extract message text
+            // Extract message text (including captions from images/documents)
             const text = message.message?.conversation ||
-                message.message?.extendedTextMessage?.text || '';
+                message.message?.extendedTextMessage?.text ||
+                message.message?.imageMessage?.caption ||
+                message.message?.documentMessage?.caption ||
+                message.message?.documentWithCaptionMessage?.message?.documentMessage?.caption || '';
 
             console.log(`📩 Message from [Chat: ${chatId}] [User: ${sender}]: ${text.slice(0, 50)}...`);
 

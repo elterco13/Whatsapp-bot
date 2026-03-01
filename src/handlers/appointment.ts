@@ -70,7 +70,7 @@ export async function handleAppointment(sock: WASocket, message: WAMessage, text
             apptDate,
             eventData.summary,
             eventData.location || '',
-            'Scheduled'
+            ''   // Estado calculado por ARRAYFORMULA en el sheet
         ]);
 
         await safeReply(sock, message, `✅ Cita Agendada: *${eventData.summary}*\nFecha: ${format(new Date(eventData.start), 'PP pp')}\nLink: ${createdEvent.htmlLink}`);
